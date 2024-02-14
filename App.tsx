@@ -1,0 +1,98 @@
+import React from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
+import {NativeModules} from 'react-native';
+var LocationServiceModule = NativeModules.LocationService;
+
+function App() {
+  async function StartBtn() {
+    LocationServiceModule.startLocationService(
+      (err: any) => {
+        console.log(err);
+      },
+      (msg: any) => {
+        console.log(msg);
+      },
+    );
+  }
+
+  async function StopBtn() {
+    LocationServiceModule.stopLocationService(
+      (err: any) => {
+        console.log(err);
+      },
+      (msg: any) => {
+        console.log(msg);
+      },
+    );
+  }
+
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={{
+          flex: 1,
+        }}>
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            flexDirection: 'column',
+            flex: 1,
+          }}>
+          <View style={{width: '80%', marginVertical: 20}}>
+            <Text
+              style={{
+                textAlign: 'center',
+                marginVertical: 30,
+              }}>
+              Background Location Tracking (BLT)
+            </Text>
+            <TouchableOpacity
+              onPress={StartBtn}
+              style={{
+                padding: 10,
+                backgroundColor: 'blue',
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 10,
+                marginTop: 10,
+                marginHorizontal: 10,
+              }}>
+              <Text style={{color: 'white'}}>Start</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={StopBtn}
+              style={{
+                padding: 10,
+                backgroundColor: 'red',
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 10,
+                marginTop: 10,
+                marginHorizontal: 10,
+              }}>
+              <Text style={{color: 'white'}}>Stop</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+export default App;
