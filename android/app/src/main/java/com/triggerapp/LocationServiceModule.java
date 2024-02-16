@@ -9,6 +9,8 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.lang.reflect.Array;
+
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -32,9 +34,13 @@ public class LocationServiceModule extends ReactContextBaseJavaModule {
 
     // Start the location service
     @ReactMethod
-    public void startLocationService(Callback successCallback, Callback errorCallback) {
+    public void startLocationService(String UserData, String Url, String AuthToken, Callback successCallback,
+            Callback errorCallback) {
         if (hasLocationPermission()) {
             Intent serviceIntent = new Intent(reactContext, LocationService.class);
+            serviceIntent.putExtra("UserData", UserData);
+            serviceIntent.putExtra("URL", Url);
+            serviceIntent.putExtra("AuthToken", AuthToken);
             reactContext.startService(serviceIntent);
             successCallback.invoke("Location service started successfully");
         } else {

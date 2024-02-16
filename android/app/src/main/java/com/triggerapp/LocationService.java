@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.google.gson.Gson;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 // import com.google.firebase.firestore.DocumentReference;
@@ -31,11 +32,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
+import java.io.IOException;
+
+import okhttp3.*;
 
 public class LocationService extends Service {
 
     private static final String TAG = "LocationService";
-    private static final int LOCATION_UPDATE_INTERVAL = 5 * 1000; // 10 seconds
+    private static final int LOCATION_UPDATE_INTERVAL = 10 * 1000; // 10 seconds
     private static final int NOTIFICATION_ID = 12345;
     private static final String CHANNEL_ID = "LocationServiceChannel";
     private LocationManager mLocationManager;
@@ -44,6 +48,11 @@ public class LocationService extends Service {
     private PowerManager.WakeLock wakeLock;
 
     private List<Map<String, Object>> pendingLocationUpdates = new ArrayList<>();
+
+    // HTTP POST Request Data
+    private String userData;
+    private String AuthToken;
+    private String URL;
 
     // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -89,6 +98,12 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent != null) {
+            userData = intent.getStringExtra("UserData");
+            AuthToken = intent.getStringExtra("AuthToken");
+            URL = intent.getStringExtra("URL");
+        }
+
         return START_STICKY;
     }
 
@@ -131,6 +146,7 @@ public class LocationService extends Service {
             userLocation.put("longitude", location.getLongitude());
             userLocation.put("time", currentTimeUTC.toString());
             userLocation.put("Source", "Network");
+            userLocation.put("UserId", userData);
 
             Log.d(TAG, "Network Location updated: " + location.getLatitude() + ", " + location.getLongitude() + ", "
                     + currentTimeUTC);
@@ -172,6 +188,7 @@ public class LocationService extends Service {
             userLocation.put("longitude", location.getLongitude());
             userLocation.put("time", currentTimeUTC.toString());
             userLocation.put("Source", "GPS");
+            userLocation.put("UserId", userData);
 
             pendingLocationUpdates.add(userLocation);
 
@@ -199,7 +216,7 @@ public class LocationService extends Service {
         Iterator<Map<String, Object>> iterator = pendingLocationUpdates.iterator();
         while (iterator.hasNext()) {
             Map<String, Object> userLocation = iterator.next();
-            Log.d(TAG, "Location Time : " + userLocation.get("time"));
+            handleLocationDetails(userLocation);
             iterator.remove();
         }
 
@@ -220,4 +237,41 @@ public class LocationService extends Service {
             wakeLock.release();
         }
     }
+
+    private void handleLocationDetails(Map<String, Object> locationDetails) {
+        Log.d(TAG, "Location details: " + locationDetails + URL + AuthToken);
+
+        // Gson gson = new Gson();
+        // String requestBody = gson.toJson(locationDetails);
+
+        // OkHttpClient client = new OkHttpClient();
+        // MediaType mediaType = MediaType.parse("application/json");
+        // RequestBody body = RequestBody.create(mediaType, requestBody);
+
+        // Request.Builder requestBuilder = new Request.Builder()
+        // .url(URL)
+        // .post(body);
+
+        // if (AuthToken != null) {
+        // requestBuilder.addHeader("Authorization", "Bearer " + AuthToken);
+        // }
+
+        // Request request = requestBuilder.build();
+
+        // client.newCall(request).enqueue(new Callback() {
+        // @Override
+        // public void onFailure(Call call, IOException e) {
+        // e.printStackTrace();
+        // }
+
+        // @Override
+        // public void onResponse(Call call, Response response) throws IOException {
+        // if (!response.isSuccessful()) {
+        // throw new IOException("Unexpected code " + response);
+        // }
+        // String responseData = response.body().string();
+        // }
+        // });
+    }
+
 }

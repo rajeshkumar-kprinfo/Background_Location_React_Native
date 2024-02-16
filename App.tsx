@@ -10,9 +10,16 @@ import {
 import {NativeModules} from 'react-native';
 var LocationServiceModule = NativeModules.LocationService;
 
+const UserId = '19cs123';
+const Url = 'http://localhost:3000/api/location';
+const AuthToken = 'Bearer 1234567890';
+
 function App() {
   async function StartBtn() {
     LocationServiceModule.startLocationService(
+      UserId,
+      Url,
+      AuthToken,
       (err: any) => {
         console.log(err);
       },
