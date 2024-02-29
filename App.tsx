@@ -14,6 +14,18 @@ const UserId = '19cs123';
 const Url = 'http://localhost:3000/api/location';
 const AuthToken = 'Bearer 1234567890';
 
+const data = {
+  userId: '19cs123',
+  url: 'http://localhost:3000/api/location',
+  auth_token: 'Bearer 123',
+  org_id: '123',
+  time_interval: 10000,
+  is_auto_start: true,
+  days: [0, 1, 2, 3, 4, 5, 6],
+  start_time: '09:00',
+  end_time: '17:00',
+};
+
 function App() {
   async function StartBtn() {
     LocationServiceModule.startLocationService(

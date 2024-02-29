@@ -21,8 +21,6 @@ import androidx.core.app.NotificationCompat;
 import com.google.gson.Gson;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-// import com.google.firebase.firestore.DocumentReference;
-// import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -53,8 +51,6 @@ public class LocationService extends Service {
     private String userData;
     private String AuthToken;
     private String URL;
-
-    // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public void onCreate() {
@@ -240,38 +236,6 @@ public class LocationService extends Service {
 
     private void handleLocationDetails(Map<String, Object> locationDetails) {
         Log.d(TAG, "Location details: " + locationDetails + URL + AuthToken);
-
-        // Gson gson = new Gson();
-        // String requestBody = gson.toJson(locationDetails);
-
-        // OkHttpClient client = new OkHttpClient();
-        // MediaType mediaType = MediaType.parse("application/json");
-        // RequestBody body = RequestBody.create(mediaType, requestBody);
-
-        // Request.Builder requestBuilder = new Request.Builder()
-        // .url(URL)
-        // .post(body);
-
-        // if (AuthToken != null) {
-        // requestBuilder.addHeader("Authorization", "Bearer " + AuthToken);
-        // }
-
-        // Request request = requestBuilder.build();
-
-        // client.newCall(request).enqueue(new Callback() {
-        // @Override
-        // public void onFailure(Call call, IOException e) {
-        // e.printStackTrace();
-        // }
-
-        // @Override
-        // public void onResponse(Call call, Response response) throws IOException {
-        // if (!response.isSuccessful()) {
-        // throw new IOException("Unexpected code " + response);
-        // }
-        // String responseData = response.body().string();
-        // }
-        // });
     }
 
 }
