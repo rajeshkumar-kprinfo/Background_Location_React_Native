@@ -1,6 +1,8 @@
 package com.triggerapp;
 
+import android.content.Intent;
 import android.app.Application;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -8,7 +10,13 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
-// import org.devio.rn.splashscreen.SplashScreenReactPackage;
+
+import com.facebook.react.bridge.NativeModule;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.uimanager.ViewManager;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -23,8 +31,10 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             @SuppressWarnings("UnnecessaryLocalVariable")
             List<ReactPackage> packages = new PackageList(this).getPackages();
-            // new SplashScreenReactPackage();
+
             packages.add(new LocationServicePackage());
+            packages.add(new SharedPreferencesPackage());
+
             return packages;
         }
 
@@ -54,11 +64,36 @@ public class MainApplication extends Application implements ReactApplication {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-            // If you opted-in for the New Architecture, we load the native entry point for
-            // this app.
             DefaultNewArchitectureEntryPoint.load();
         }
-        // ReactNativeFlipper.initializeFlipper(this,
-        // getReactNativeHost().getReactInstanceManager());
+
+        // Start the foreground service
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        startService(serviceIntent);
     }
+
+    // Define the SharedPreferences package
+    private class SharedPreferencesPackage implements ReactPackage {
+        @Override
+        public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+            List<NativeModule> modules = new ArrayList<>();
+            modules.add(new SharedPreferencesModule(reactContext)); // Pass the reactContext
+            return modules;
+        }
+
+        @Override
+        public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+        // Stop the foreground service
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        stopService(serviceIntent);
+    }
+
 }

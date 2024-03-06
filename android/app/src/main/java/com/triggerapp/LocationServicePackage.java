@@ -19,7 +19,6 @@ public class LocationServicePackage implements ReactPackage {
     public List<NativeModule> createNativeModules(
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        // Register the LocationServiceModule here
         modules.add(new LocationServiceModule(reactContext));
         return modules;
     }
