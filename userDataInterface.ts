@@ -17,7 +17,7 @@ export default interface UserData {
   org_id: string;
   time_interval: number;
   is_auto_start: boolean;
-  days: number[]; // Array of numbers representing days of the week
+  days: number[];
   start_time: string;
   end_time: string;
   is_attendance_in: boolean;
