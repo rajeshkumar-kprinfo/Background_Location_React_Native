@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import {NativeModules} from 'react-native';
+import UserData from './userDataInterface';
 
 var LocationServiceModule = NativeModules.LocationService;
 const {SharedPreferencesModule} = NativeModules;
@@ -16,19 +17,19 @@ const UserId = '19cs123';
 const Url = 'http://localhost:1337/visits/distance';
 const AuthToken = 'Bearer 1234567890';
 
-const data = {
+const data: UserData = {
   user_id: '65e2eae34ff27561b01d5d4d',
   url: 'http://10.10.10.148:1337/visits/distance',
   geo_fencing_url: 'http://10.10.10.148:1337/visits/setgeofencing',
   auth_token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWNjODNjMjhiNjAxMjU0YTljOGJmNSIsInVzZXJuYW1lIjoiOTA5MDkwODA4MCIsImlhdCI6MTcwODUwODU4MywiZXhwIjoxNzQwMDQ0NTgzfQ.eMJSWhwc5l3CywF-_9-gfXJsYFZv_4K-R4ZGuPj6RLE',
-  org_id: '123',
+  org_id: '659cc83b28b601254a9c8bf4',
   time_interval: 10000,
   is_auto_start: false,
   days: [1, 2, 3, 4, 5, 6],
   start_time: '09:00',
   end_time: '18:34',
-  is_attendance_in: false,
+  is_attendance_in: true,
   is_attendance_out: false,
   geofencing: [
     {

@@ -10,6 +10,8 @@ import okhttp3.Response;
 import org.json.JSONObject;
 import java.io.IOException;
 
+import android.util.Log;
+
 public class HttpRequest {
 
     public static void sendPostRequest(String url, JSONObject jsonData, String authToken, Callback callback)
@@ -28,6 +30,17 @@ public class HttpRequest {
         // Add authorization header if token is provided
         if (authToken != null && !authToken.isEmpty()) {
             requestBuilder.addHeader("Authorization", authToken);
+        }
+
+        // Add organization id header if organization id is provided
+        if (jsonData.has("organization_id")) {
+            try {
+                String organizationId = jsonData.getString("organization_id");
+                requestBuilder.addHeader("Organizationid", organizationId);
+                Log.d("OrganizationId", organizationId);
+            } catch (Exception e) {
+                Log.d("OrganizationId", e.getMessage());
+            }
         }
 
         Request request = requestBuilder.build();
